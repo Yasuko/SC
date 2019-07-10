@@ -76,7 +76,8 @@ export class ScreenComponent implements OnInit {
      * video        : 映像のみ
      * audio        : 音声の配信
      * listener     : 視聴のみ
-     *  */
+     *
+     */
     public mode = 'contributor';
 
     public showBitrate = 0;
@@ -97,10 +98,9 @@ export class ScreenComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('aaa');
         this.initial();
         // this.setup();
-        // this.setRoomName();
+        this.setRoomName();
     }
 
     private hub(): void {
@@ -340,7 +340,7 @@ export class ScreenComponent implements OnInit {
         }
         this.title = this.desc;
 
-        // ブラウザがgetUserMediaに対応しているか判定
+        // ブラウザがMediaAPIに対応しているか
         if (this.webrtcService.checkScreenShare()) {
             this.contentService.changeState('ScreenSelect', true);
         } else {
@@ -624,31 +624,6 @@ export class ScreenComponent implements OnInit {
         const audio = document.getElementById(id);
         this.audioBox.removeChild(audio);
         return audio;
-    }
-
-
-    /**
-     * 録画再生
-     */
-
-    public start_recorde(id): void {
-        const hideo = document.getElementById(id);
-        this.webrtcService.setRecordePlayer(hideo);
-        this.webrtcService.startRecord();
-    }
-
-    public stop_recorde(): void {
-        this.webrtcService.stopRecord();
-    }
-
-    public play_recorde(): void {
-        this.webrtcService.plyaRecord();
-    }
-
-    public dl_recorde(id): void {
-        const dl: any = document.getElementById(id);
-        dl.download = 'hideo.webm';
-        dl.href = this.webrtcService.getRecordeURL();
     }
 
     private AllReset(): void {

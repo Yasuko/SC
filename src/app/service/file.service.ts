@@ -1,9 +1,5 @@
-import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import * as socketIo from 'socket.io-client';
 import { SubjectsService } from './subjects.service';
-import { reject } from 'q';
-
 
 @Injectable()
 export class FileService {

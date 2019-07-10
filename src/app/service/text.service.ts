@@ -1,8 +1,4 @@
-import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import * as socketIo from 'socket.io-client';
-import { SubjectsService } from './subjects.service';
-
 
 @Injectable()
 export class TextService {

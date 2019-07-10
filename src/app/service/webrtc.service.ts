@@ -3,7 +3,7 @@ import {
     RecorderService, SDPService,
     PearService
 } from './';
-import { SupportService } from './webrtc/support.service';
+import { SupportService } from './';
 
 @Injectable()
 export class WebRTCService {
@@ -26,6 +26,7 @@ export class WebRTCService {
         private sdpService: SDPService,
         private supportService: SupportService
     ) { }
+
 
     /**
      * 録画開始
@@ -60,7 +61,6 @@ export class WebRTCService {
     public getRecordeURL(): string {
         return this.recordeService.getRecordeURL();
     }
-
     /**
      * ローカルストリームの取得
      */
@@ -71,22 +71,28 @@ export class WebRTCService {
                 reject(false);
             }
             const API = this.supportService.getMediAPI();
+            console.log(API);
+            console.log(mode);
+
             navigator.mediaDevices[API]({
                 video: mode.video,
-                // video: {facingMode: 'user'},
                 audio: mode.audio
             }).then((stream: MediaStream) => {
-                // this.localStream = stream;
                 console.log('Set Local Stream');
                 this.setStream('local', stream);
                 resolve(true);
             }).catch((error) => {
-                console.error(error);
+                console.error(error.message);
                 reject(false);
             });
         });
     }
 
+    /**
+     * 部屋名作成用のランダム文字列の生成
+     * @param len 
+     * @param charSet 
+     */
     public getRandomString(len, charSet: string = null): string {
         charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let randomString = '';
@@ -140,7 +146,7 @@ export class WebRTCService {
      * listener：受信専用
      * contributor：配信専用
      */
-    public checkMode(check_mode): boolean {
+    public checkMode(check_mode: any): boolean {
         if (check_mode.includes(this.videoMode)) {
             return true;
         } else {
@@ -152,19 +158,20 @@ export class WebRTCService {
      * GetUserMediaに対応しているか
      */
     public checkScreenShare(): boolean {
-        return this.supportService.checkScreenShare();
+        return (this.supportService.getMediAPI() === null) ? false : true;
     }
 
     /**
-     * MediaDeviceが利用可能か
+     * MediaDeviceが利用可能か確認し
+     * 利用可能なデバイスの一覧を返す
      */
-    public checkMediaDevice(): Promise<object> {
-        return new Promise((resolve) => {
-            this.supportService.checkMediaDevice()
+    public async checkMediaDevice(): Promise<object> {
+        return this.supportService
+            .checkScreenShare()
+            .checkMediaDevice()
             .then((result) => {
-                resolve(result);
+                return result;
             });
-        });
     }
 
     /**

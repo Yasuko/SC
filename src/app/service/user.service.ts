@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { SubjectsService } from './subjects.service';
 
 @Injectable()
 export class UserService {

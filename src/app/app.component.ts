@@ -1,8 +1,4 @@
-import { Component, OnInit, Renderer2 } from '@angular/core';
-import { WebSocketService } from './service';
-import { WebRTCService } from './service';
-import { SubjectsService } from './service';
-import { of } from 'rxjs';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -10,18 +6,7 @@ import { of } from 'rxjs';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent implements OnInit {
-
-
-  constructor(
-
-  ) {}
-
-
-  ngOnInit(): void {
-
-  }
-
+export class AppComponent {
 
 }
 

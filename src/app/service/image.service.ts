@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MouseService } from './';
-import { COPYFILE_EXCL } from 'constants';
+// import { COPYFILE_EXCL } from 'constants';
 @Injectable()
 export class ImageService {
     private targetTag: any = null;

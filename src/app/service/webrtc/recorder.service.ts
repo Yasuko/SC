@@ -1,20 +1,49 @@
 import { Injectable } from '@angular/core';
+declare var MediaRecorder: any;
 
 @Injectable()
 export class RecorderService {
-
     private Stream: any = null;
-    private recorder: MediaRecorder;
+    private recorder: any;
     private recordData = [];
     private recordeTarget: any;
     private recordeURL: any;
 
-    constructor(
+    private Options = {
+        videoBitsPerSecond  : 512000,
+        mimeType            : 'video/webm; codecs=vp9'
+    };
 
-    ) {}
+    constructor() {}
 
-    public setStream(stream): void {
+    /**
+     * 録画するデータストリームを取得
+     * @param stream 
+     */
+    public setStream(stream): this {
         this.Stream = stream;
+        return this;
+    }
+
+    /**
+     * 録画映像の再生先登録
+     * @param target 録画再生ターゲットDOM
+     */
+    public setRecordePlayer(target): this {
+        this.recordeTarget = target;
+        return this;
+    }
+
+    /**
+     * 
+     * @param time 
+     */
+    public setRecordOptions(option: object): this {
+        this.Options.videoBitsPerSecond = 
+                ('videoBitsPerSecond' in option)
+                    ? option['videoBitsPerSecond']
+                    : this.Options.videoBitsPerSecond;
+        return this;
     }
 
     /**
@@ -24,16 +53,15 @@ export class RecorderService {
      * コーデックはvp9
      * ビットレート　512kにて録画される
      */
-    public startRecord(time: number = 1000): void {
-        const options = {
-            videoBitsPerSecond : 512000,
-            mimeType : 'video/webm; codecs=vp9'
-        };
-        this.recorder = new MediaRecorder(this.Stream, options);
-        this.recorder.ondataavailable = (result) => {
-            this.recordData.push(result.data);
-        };
-        this.recorder.start(time);
+    public startRecord(time: number = 1000): this {
+        if (this.recorder === null) {
+            this.recorder = new MediaRecorder(this.Stream, this.Options);
+            this.recorder.ondataavailable = (result) => {
+                this.recordData.push(result.data);
+            };
+            this.recorder.start(time);
+        }
+        return this;
     }
     /**
      * 録画停止
@@ -45,13 +73,6 @@ export class RecorderService {
         this.recorder.stop();
     }
 
-    /**
-     * 録画映像の再生先登録
-     * @param target 録画再生ターゲットDOM
-     */
-    public setRecordePlayer(target): void {
-        this.recordeTarget = target;
-    }
     /**
      * 録画の再生
      */

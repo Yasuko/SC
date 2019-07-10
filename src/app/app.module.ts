@@ -9,21 +9,20 @@ import { AppComponent } from './app.component';
 
 import { ScreenComponent } from './hentai/screen.component';
 
-import { AlertComponent, ConfirmationComponent, LoadingComponent } from './_lib_component';
+import {
+  AlertComponent, ConfirmationComponent, LoadingComponent
+} from './_lib_component';
 
 import { MessageService } from './message/message.service';
 import {
    WebSocketService, ImageService,
    MouseService, FileService,
-   WebRTCService, RecorderService,
+   WebRTCService,
    SDPService,
    SupportService,
    PearService
 } from './service';
 import { ImageSaveService } from './_lib_service';
-
-
-// import { JanusService } from './service';
 
 import { SubjectsService } from './service';
 
@@ -31,6 +30,7 @@ import {
   TextService, UserService, ContentService, DrawService,
   StoryService
 } from './service';
+import { RecorderService } from './service/webrtc/recorder.service';
 
 @NgModule({
   declarations: [
@@ -52,9 +52,9 @@ import {
     MessageService,
     WebSocketService,
     MouseService,
-    WebRTCService, RecorderService, SDPService,
+    WebRTCService, SDPService,
     SupportService, PearService,
-    ImageService,
+    ImageService, RecorderService,
     TextService, UserService, ContentService, DrawService,
     StoryService, FileService,
     ImageSaveService
