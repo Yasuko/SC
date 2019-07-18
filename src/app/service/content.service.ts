@@ -4,34 +4,7 @@ import { Injectable } from '@angular/core';
 export class ContentService {
 
     private show = {
-        WaitingVideo: false,
-        HeaderScreen: false,
-        CenterScreen: true,
-
-        ScreenVideo: false,
-        ScreenStart: true,
-        ScreenMenu: false,
-        ScreenSelect: false,
-
-        CreateNow: false,
-        // hiddenディレクティブで消しているので
-        // 真否判定が逆
-        Room: true,
-
-        // ツール表示
-        ScreenDashbord: false,
-
-        // キャプチャ操作
-        ScreenCapture: false,
-        CaptureEditer: false,
-
-        // テキスト
-        ScreenText: false,
-
-        // ストーリーボード
-        ScreenStory: false,
-
-        ScreenBlock: false,
+        CaptureSelect: false,
     };
 
 
@@ -64,73 +37,10 @@ export class ContentService {
         return false;
     }
 
-    public showVideoPlay(): void {
-        this.show['WaitingVideo'] = false;
-        this.show['ScreenVideo'] = false;
-    }
-
-    public showStartSequence(): void {
-        this.show['ScreenStart'] = false;
-        this.show['ScreenMenu'] = true;
-        this.show['CreateNow'] = true;
-    }
-    public showListenerSequence(): void {
-        this.show['ScreenStart'] = false;
-        this.show['CenterScreen'] = false;
-        this.show['HeaderScreen'] = true;
-        this.show['Room'] = false;
-    }
-    public showLocalStream(): void {
-        this.show['CenterScreen'] = false;
-        this.show['HeaderScreen'] = true;
-        this.show['Room'] = false;
-    }
-
-    public showRemoteStream(): void {
-        this.show['CenterScreen'] = false;
-        this.show['HeaderScreen'] = true;
-    }
-
-    public showDashbordeContent(target: string): void {
-        this.closeDashborde();
-        this.show[target] = true;
-    }
-
-    public closeDashborde(): void {
-        this.show['ScreenStory'] = false;
-        this.show['ScreenCapture'] = false;
-        this.show['ScreenText'] = false;
-        this.show['ScreenEditer'] = false;
-    }
 
     public screenReset(): void {
         this.show = {
-            WaitingVideo: false,
-            HeaderScreen: false,
-            CenterScreen: true,
-
-            ScreenVideo: false,
-            ScreenStart: true,
-            ScreenMenu: false,
-            ScreenSelect: false,
-
-            CreateNow: false,
-            Room: true,
-
-            // ツール表示
-            ScreenDashbord: false,
-
-            // キャプチャ操作
-            ScreenCapture: false,
-            CaptureEditer: false,
-
-            // テキスト
-            ScreenText: false,
-
-            // ストーリーボード
-            ScreenStory: false,
-
-            ScreenBlock: false,
+            CaptureSelect: false,
         };
     }
 

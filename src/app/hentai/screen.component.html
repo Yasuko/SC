@@ -1,254 +1,27 @@
-<div class="">
-	<div id="audioBox">
-		<audio id="audio0" autoplay playsinline></audio>
-		<audio id="audio1" autoplay playsinline></audio>
-		<audio id="audio2" autoplay playsinline></audio>
-		<audio id="audio3" autoplay playsinline></audio>
-		<audio id="audio4" autoplay playsinline></audio>
-		<audio id="audio5" autoplay playsinline></audio>
-	</div>
-	<div class="page-center" *ngIf="showContent('CenterScreen')">
-		<div class="page-center-block" *ngIf="showContent('ScreenStart')">
-			<div class="title-s3">
-				<h3>vMeeting</h3>
-			</div>
-			<div class="list-block-s1">
-				<div class="cp_iptxt">
-					<input
-						type="text"
-						placeholder="Your name"
-						[(ngModel)]="name" />
-					<i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i>
-				</div>
-				<div class="center-button-s" (click)="start()">開始</div>
-			</div>
-		</div>
-		<div class="page-center-block" *ngIf="showContent('ScreenMenu')">
-			<div class="list-block-s1" *ngIf="showContent('CreateNow')">
-				<div class="cp_iptxt">
-					<input
-						type="text"
-						placeholder="Insert a title for the session"
-						(keypress)="checkEnterShare($event)"
-						[(ngModel)]="desc" />
-					<i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i>
-				</div>
-				<div class="button-s" (click)="preShareScreen()">画面共有</div>
-			</div>
-		</div>
-		<div class="page-center-block" *ngIf="showContent('ScreenSelect')">
-			<div class="list-block-s2">
-				<div class="button-m" (click)="setShareMode('screen')">画面を共有</div>
-				<div class="button-m" (click)="setShareMode('window')">アプリを共有</div>
-				<div class="button-m" (click)="setShareMode('application')">アプリを共有?</div>
-			</div>
-		</div>
-	</div>
-	<div class="page-header" *ngIf="showContent('HeaderScreen')">
-		<div class="exit-button" (click)="stop()">
-			<img src="assets/img/exit.png" alt="End ScreenShare">
-		</div>
-		<div class="members">
-			<span>Persons　</span>
-			<ng-container *ngFor="let user of getUsers()">
-			<div class="member-detail">
-				<p [style.background-color]="user.color">{{user.name}}</p>
-			</div>
-			<div><audio id="audio_{{user.id}}" autoplay></audio></div>
-			</ng-container>
-		</div>
-		<div class="header-status">
-			<span>
-				Title：{{title}}
-			</span>
-			<span>
-				Room：{{room}}
-			</span>
-		</div>
-	</div>
-
-	<div class="screen-view" id="room" [hidden]="showContent('Room')">
-		<div class="screen-block" *ngIf="showContent('ScreenBlock')"></div>
-		<div class="screen-body">
-			<video
-				class="rounded centered" id="waitingvideo"
-				width="100%" height="100%"
-				*ngIf="showContent('WaitingVideo')" >
-			</video>
-			<div class="screen-videobox">
-				<video
-					id="screenvideo"
-					[attr.width]="myvideoState.width"
-					[attr.height]="myvideoState.height"
-					[attr.muted]="myvideoState.muted"
-					autoplay playsinline
-					(playing)="videoPlaying()">
-				</video>
-			</div>
-			<div
-				class="screen-artbox"
-				[attr.width]="myvideoState.width"
-				[attr.height]="myvideoState.height">
-				<canvas
-					width={{myvideoState.width}}
-					height={{myvideoState.height}}
-					id="artbox"></canvas>
-			</div>
-		</div>
-	</div>
+<div class="screen-videobox">
+	<video
+		id="screenvideo"
+		[attr.width]="myvideoState.width"
+		[attr.height]="myvideoState.height"
+		[attr.muted]="myvideoState.muted">
+	</video>
 </div>
-
-<div class="page-tools" [hidden]="showContent('Room')">
-	<div
-		class="tool-button"
-		(click)="captureScreen()">
-		<img src="assets/img/sshot.png" alt="Take ScreenShot">
-	</div>
-	<div class="tool-button" (click)="changeDashbordeContent('ScreenCapture')">
-		<img src="assets/img/edit.png" alt="Edit ScreenShot">
-	</div>
-	<div class="tool-button" (click)="changeDashbordeContent('ScreenText')">
-		<img src="assets/img/chat.png" alt="Chat">
-	</div>
-	<div class="tool-button" (click)="changeDashbordeContent('ScreenStory')">
-		<img src="assets/img/memo.png" alt="View Story">
-	</div>
-</div>
-<!--
-	スクリーンショット
--->
-<div class="screen-capture" *ngIf="showContent('ScreenCapture')">
-	<div class="button-close" (click)="closeDashborde()">Close</div>
-	<ng-container *ngFor="let cap of getAllCapture(); index as i">
-	<div class="screen-list">
-		<span
-			(click)="exportScreenShot(i)"
-			class="screen-dlbutton">DL</span>
-		<!--<span>共有</span>-->
+<div class="capture_select" *ngIf="showContent('CaptureSelect')">
+	<div class="capture_img">
 		<img
-			(click)="startCaptureEdit(i)"
-			src="{{cap.image}}" width=320>
-	</div>
-	</ng-container>
-</div>
-<!--
-	スクリーンショット編集
--->
-<div class="page-editer" *ngIf="showContent('CaptureEditer')">
-	<div class="screen"></div>
-	<div class="canvas-layer">
-		<canvas id="editbox" width=1024 height=600></canvas>
-	</div>
-	<div class="canvas-layer">
-		<canvas id="layerbox" width=1024 height=600></canvas>
-	</div>
-	<div class="canvas-layer"
-		(mousemove)="moveEditerTagPosition($event)">
-		<ng-container *ngFor="let tag of getCaptureTags(); let t = index">
-			<div
-			[style.top]="tag.top + 'px'"
-			[style.left]="tag.left + 'px'"
-			class="editer-tags">
-				<div class="editer-tag-header">
-					<div class="editer-tags-move"
-					(mousedown)="moveEditerTag(t, true, $event)"
-					(mouseup)="moveEditerTag(t, false, $event)"
-					(mouseup)="moveEditerTag(t, false, $event)">==</div>
-					<div
-						class="editer-tags-delete"
-						(click)="deleteTag(t)">☓</div>
-				</div>
-				<div class="editer-tags-text">
-					<input type="text" [(ngModel)]="tag.text">
-				</div>
-			</div>
-		</ng-container>
-	</div>
-	<div class="art-tool">
-	<ng-container *ngFor="let c of canvasColorList; let i = index">
-		<div
-		[style.backgroundColor]="c"
-		class="art-tool-palet"
-		(click)="setPaintColor(c)">
-		</div>
-	</ng-container>
-		<div class="art-tool-palet" (click)="addEditerTag($event)">
-			<img src="assets/img/tag.png">
-		</div>
-	</div>
-	<div class="close-edit" (click)="closeCaputureEdit()">Close</div>
-</div>
-<!--
-	チャット
--->
-<div class="screen-text" *ngIf="showContent('ScreenText')">
-	<div class="button-close" (click)="closeDashborde()">Close</div>
-	<div
-		class="chat-window"
-		(dragover)="onDragOverHandler($event)">
-	<div class="drag-screen" *ngIf="onDrag"
-		(dragleave)="onDragLeaveHandler($event)"
-		(drop)="onSelectHandler($event)">ファイルをまとめてドラッグ</div>
-	<ng-container *ngFor="let chats of getChatData(); index as i">
-		<div class="chat-text">
-			<span>{{chats.name}}:</span>
-			<span>{{chats.text}}</span>
-		</div>
-	</ng-container>
-	</div>
-	<div class="chat-insert">
-		<div class="cp_iptxt">
-			<input
-				type="text"
-				placeholder="Insert Chat"
-				[(ngModel)]="chatMess"
-				(keypress)="sendChatByEnter($event)"/>
-			<i class="fa fa-user fa-lg fa-fw" aria-hidden="true"></i>
-		</div>
-		<div class="chat-send-button" (click)="sendChat()">send</div>
-	</div>
-	<div class="chat-item-bord">
-	<ng-container *ngFor="let img of getAllImage(); index as i">
-		<div class="chat-items">
-			<img src="{{img.data}}" height=80 />
-			<div>{{img.name}}</div>
-			<div
-				class="chat-item-download-button"
-				(click)="saveFile('image', i)">DL</div>
-		</div>
-	</ng-container>
-	<ng-container *ngFor="let item of getAllFile(); index as i">
-		<div class="chat-items">
-			<img src="assets/img/{{getIcon(item.type)}}.png" width=70 />
-			<div>{{item.name}}</div>
-			<div
-				class="chat-item-download-button"
-				(click)="saveFile('file', i)">DL</div>
-		</div>
-	</ng-container>
+		width="320"
+		height="240"
+		[attr.src]="capture">
+		<span
+		(click)="exportScreenShot(0)"
+		class="screen-dlbutton">画像をダウンロード</span>
+		<span
+		(click)="close()"
+		class="screen-dlbutton">閉じる</span>
 	</div>
 </div>
-<!--
-	ストーリーボード
--->
-<div class="screen-story" *ngIf="showContent('ScreenStory')">
-	<div class="button-close" (click)="closeDashborde()">Close</div>
-	<div class="story-borde">
-		<div class="story-capture">
-
-		</div>
-		<div class="story-chat">
-
-		</div>
-	</div>
+<div class="center-button-s" (click)="start()">
+	<img src="assets/img/sshot.png" alt="Take ScreenShot">
 </div>
 
-
-
-<!--
-：：エラー表示
--->
-<div>
-
-</div>
 

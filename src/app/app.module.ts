@@ -4,19 +4,12 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
+// import { AppComponent } from './app.component';
 
 import { ScreenComponent } from './hentai/screen.component';
 
 import {
-  AlertComponent, ConfirmationComponent, LoadingComponent
-} from './_lib_component';
-
-import { MessageService } from './message/message.service';
-import {
-   WebSocketService, ImageService,
-   MouseService, FileService,
+   ImageService,
    WebRTCService,
    SDPService,
    SupportService,
@@ -27,21 +20,15 @@ import { ImageSaveService } from './_lib_service';
 import { SubjectsService } from './service';
 
 import {
-  TextService, UserService, ContentService, DrawService,
-  StoryService
+  ContentService
 } from './service';
 import { RecorderService } from './service/webrtc/recorder.service';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    AlertComponent,
-    ConfirmationComponent,
-    LoadingComponent,
     ScreenComponent,
   ],
   imports: [
-    AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
@@ -49,18 +36,14 @@ import { RecorderService } from './service/webrtc/recorder.service';
   ],
   providers: [
     SubjectsService,
-    MessageService,
-    WebSocketService,
-    MouseService,
     WebRTCService, SDPService,
     SupportService, PearService,
     ImageService, RecorderService,
-    TextService, UserService, ContentService, DrawService,
-    StoryService, FileService,
+    ContentService,
     ImageSaveService
   ],
   bootstrap: [
-    AppComponent,
+    ScreenComponent,
   ]
 })
 export class AppModule { }

@@ -113,6 +113,7 @@ export class SupportService {
                 navigator.mediaDevices.enumerateDevices()
                 .then((devices) => {
                         this.checkDevice(devices);
+                        console.log(devices);
                         resolve(this.mode);
                     }).catch((error) => {
                         console.error('Not Devices');
@@ -148,7 +149,54 @@ export class SupportService {
         }
     }
 
+    /**
+     * 部屋名作成用のランダム文字列の生成
+     * @param len 
+     * @param charSet 
+     */
+    public getRandomString(len, charSet: string = null): string {
+        charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let randomString = '';
+        for (let i = 0; i < len; i++) {
+            const randomPoz = Math.floor(Math.random() * charSet.length);
+            randomString += charSet.substring(randomPoz, randomPoz + 1);
+        }
+        return randomString;
+    }
 
+    public getRandomNumber(len, charSet: string = null): number {
+        charSet = charSet || '0123456789';
+        let randomString = '';
+        for (let i = 0; i < len; i++) {
+            const randomPoz = Math.floor(Math.random() * charSet.length);
+            randomString += charSet.substring(randomPoz, randomPoz + 1);
+        }
+        return Number(randomString);
+    }
+
+    /**
+     * ビデオ、オーディオデバイスの有無で
+     * 配信するコンテンツの有無を設定
+     * @param vmode 
+     * @param amode 
+     */
+    public checkStreamMode(vmode, amode): any {
+        let v = null;
+        const a = amode;
+        if (typeof (vmode) === 'boolean' || vmode === null) {
+            if (vmode === null) {
+                v = true;
+            } else {
+                v = vmode;
+            }
+        } else {
+            v = {
+                mediaSource: vmode,
+                displaySurface: 'browser',
+            };
+        }
+        return { video: v, audio: a };
+    }
 
 
 }
