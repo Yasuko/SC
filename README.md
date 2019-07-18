@@ -1,27 +1,34 @@
-# Hentai2
+# SC
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.1.0.
+ScreenDeviceを使用した画面キャプチャボタン
 
-## Development server
+提供機能
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- スクリーンショットの撮影
+----
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+----
+## Build（開発）
+----
+開発環境
+- Angular：8.0以上
+- NodeJs ：10.0以上
+- Httpサーバー（静的コンテンツ参照用）
+<br>
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+ダウンロード後に、プロジェクトフォルダ内で
 
-## Running unit tests
+`npm install`
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+関連パッケージがインストールされる<br>
+インストール完了後
 
-## Running end-to-end tests
+`ng build`
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+ブラウザより下記にアクセス<br>
+静的コンテンツ  ：https://localhost/プロジェクト/dist/<br>
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
